@@ -1,7 +1,9 @@
+<div wm-slider>
+
 <p>
     <img src="http://files.cod3r.com.br/curso-web/imagem1.jpg" alt="Mar de Kalista"
-    width="550" height="300"
-    title="Mar de Kalista" >
+     width="550" height="300"
+     title="Mar de Kalista" >
 <!--Alt(aparece mensagem no lugar da imagem, caso ela não carregue)-->
 </p>
 
@@ -18,7 +20,6 @@
 
 </p>
 
-
 <p class="texto">
     <img src="http://files.cod3r.com.br/curso-web/avatar.jpg" alt="Avatar"
     height="75" 
@@ -27,17 +28,22 @@
     
 <p class="cidade"></p>
 
-<P>
-    <picture>
-        <source srcset="http://files.cod3r.com.br/curso-web/logo-larga.png"
-        media="(min-width: 600px">
-        <img src="http://files.cod3r.com.br/curso-web/logo-estreita.png" alt="Logo">
-    </picture>
-
-</P>
+    <p>
+        <picture>
+            <source srcset="http://files.cod3r.com.br/curso-web/logo-larga.png"
+            media="(min-width: 600px">
+            <img src="http://files.cod3r.com.br/curso-web/logo-estreita.png" alt="Logo">
+        </picture>
+    </p>
+</div>
 
 <style>
-    .circular{
+    p{
+        position: absolute;
+        display: none;
+    }
+   
+   .circular{
         width: 510px;
         background-color: rgb(122, 121, 121);
     }
@@ -59,4 +65,58 @@
     }
 
 </style>
+
+<script>
+    function mover (elem, inicio, fim, passo, callback){
+        const novoInicio = inicio - passo  
+
+        if (novoInicio >= fim){
+            elem.style.left = novoInicio + 'px'
+            setTimeout(() => mover(elem, novoInicio, fim, passo, callback),9)
+        } else {
+            callback()
+        }
+    }
+
+    //const p = document.querySelector('[wm-slider] > p ')
+    //p.style.display = 'block'
+    //mover(p, 1500, -600, 10, () =>{
+    //    console.log('Deu certo')
+    //})
+
+    function slider(){
+        const elementos = document.querySelectorAll('[wm-slider] > p')
+        const slides = Array.from(elementos)
+        exibirSlide(slides, slides[0])        
+    }
+
+    function exibirSlide(slides, slide){
+        slide.style.display = 'block'
+    
+        const inicio = innerWidth
+        const fim = -slide.clientWidth
+
+        slide.style.left = '${inicio}px'
+
+    //Velocidade do "passo" da imagem no slide
+        mover(slide, inicio, fim, 4, () => {
+    slide.style.display = 'none'
+    exibirSlide(slides, getProximo(slides, slide))        
+    console.log('Slide ok')
+        })
+   }
+    
+   //Faz com que ao acabar de passar uma imagem outra-->
+  
+   function getProximo(lista, atual){
+        const i = lista.indexOf(atual) + 1
+        return i < lista.length ? lista[i] : lista[0]
+    
+   }
+
+   slider()
+
+   
+
+</script>
 
